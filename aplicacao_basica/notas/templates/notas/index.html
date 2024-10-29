@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Notas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notas/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-sticky-note logo-icon"></i>
+            <h1 id="headerTitle" class="header-title">Minhas Notas</h1>
+        </div>
+        <div class="button-group">
+            <button id="botaoCriarNota" class="button-create"><i class="fas fa-plus"></i> Nova Nota</button>
+            <button id="botaoHome" class="button-create" style="display: none;"><i class="fas fa-home"></i> Home</button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div id="formContainer" class="form-container" style="display: none;"></div>
+        <section class="note-section">
+            {% for nota in notas %}
+            <div class="note-item">
+                <i class="fas fa-thumbtack pin-icon"></i>
+                <h3 class="note-title">{{ nota.titulo }}</h3>
+                <p class="note-content">{{ nota.conteudo }}</p>
+                <div class="note-actions">
+                    <a href="{% url 'editar_nota' nota.id %}" class="action edit"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="{% url 'excluir_nota' nota.id %}" class="action delete"><i class="fas fa-trash-alt"></i> Excluir</a>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Meu Blog. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Função para atualizar a interface após o carregamento da página
+        function atualizarInterface() {
+            // Exibe o botão "Nova Nota" e oculta o botão "Home"
+            document.getElementById('botaoCriarNota').style.display = 'flex';
+            document.getElementById('botaoHome').style.display = 'none';
+            document.getElementById('headerTitle').innerText = 'Minhas Notas';
+            document.getElementById('formContainer').style.display = 'none';
+            document.querySelector('.note-section').style.display = 'block';
+        }
+
+        // Chamada para atualizar a interface ao carregar a página
+        window.onload = atualizarInterface;
+
+        document.getElementById('botaoCriarNota').addEventListener('click', function () {
+            // Modifica o título da navbar
+            document.getElementById('headerTitle').innerText = 'Criar Nota';
+
+            // Alterna a visibilidade dos botões
+            document.getElementById('botaoCriarNota').style.display = 'none';
+            document.getElementById('botaoHome').style.display = 'flex';
+
+            // Lógica para mostrar o formulário e esconder as notas
+            fetch('{% url "criar_form" %}')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('formContainer').innerHTML = html;
+                    document.getElementById('formContainer').style.display = 'block';
+                    document.querySelector('.note-section').style.display = 'none';
+
+                    // Adiciona o evento de envio ao formulário criado dinamicamente
+                    const formCriarNota = document.getElementById('formCriarNota');
+                    if (formCriarNota) {
+                        formCriarNota.addEventListener('submit', function (e) {
+                            e.preventDefault();
+                            const formData = new FormData(this);
+
+                            fetch('{% url "criar_nota_ajax" %}', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    // Cria o HTML da nova nota com os botões de ação
+                                    const novaNota = 
+                                        `<div class="note-item">
+                                            <i class="fas fa-thumbtack pin-icon"></i>
+                                            <h3 class="note-title">${data.titulo}</h3>
+                                            <p class="note-content">${data.conteudo}</p>
+                                            <div class="note-actions">
+                                                <a href="/editar/${data.id}/" class="action edit"><i class="fas fa-edit"></i> Editar</a>
+                                                <a href="/excluir/${data.id}/" class="action delete"><i class="fas fa-trash-alt"></i> Excluir</a>
+                                            </div>
+                                        </div>`;
+
+                                    // Adiciona a nova nota à lista de notas
+                                    document.querySelector('.note-section').insertAdjacentHTML('beforeend', novaNota);
+                                    // Retorna à lista de notas
+                                    atualizarInterface(); // Chama a função para atualizar a interface
+                                } else {
+                                    alert('Erro ao salvar a nota.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Erro ao salvar a nota:', error);
+                                alert('Erro ao salvar a nota.');
+                            });
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar o formulário:', error);
+                    alert('Erro ao carregar o formulário.');
+                });
+        });
+
+        // Botão "Home" para retornar à lista de notas
+        document.getElementById('botaoHome').addEventListener('click', function () {
+            // Chama a função para atualizar a interface ao voltar para a lista de notas
+            atualizarInterface();
+        });
+    </script>
+</body>
+</html>

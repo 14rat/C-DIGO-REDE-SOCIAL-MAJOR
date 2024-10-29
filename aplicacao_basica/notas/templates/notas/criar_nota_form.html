@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Nota</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Importa o novo CSS para criação de nota -->
+    <link rel="stylesheet" href="{% static 'notas/criar_nota.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="{% url 'lista_notas' %}">
+                <i class="fas fa-book-open"></i> Blog
+            </a>
+        </div>
+        <div class="navbar-right">
+            <a href="{% url 'lista_notas' %}">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="{% url 'criar_form' %}" class="botao-criar-nota">
+                <span class="botao-criar-nota-icon">&#10010;</span> Criar Nota
+            </a>
+        </div>
+    </nav>
+
+    <!-- Container Principal para Criar Nota -->
+    <div class="criar-nota-container">
+        <header class="main-header">
+            <h1>Criar Nova Nota</h1>
+            <p>Preencha os campos abaixo para criar uma nova nota.</p>
+        </header>
+
+        <form id="formCriarNota" method="post">
+            {% csrf_token %}
+            <label for="titulo">Título</label>
+            <input type="text" name="titulo" id="titulo" required>
+
+            <label for="conteudo">Conteúdo</label>
+            <textarea name="conteudo" id="conteudo" rows="4" required></textarea>
+
+            <button type="submit" class="btn-criar"><i class="fas fa-save"></i> Criar Nota</button>
+        </form>
+    </div>
+
+    <!-- Script AJAX para criação de nota -->
+    <script>
+        document.getElementById('formCriarNota').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            fetch("{% url 'criar_nota_ajax' %}", {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Nota criada com sucesso!');
+                    window.location.href = "{% url 'lista_notas' %}";
+                } else {
+                    alert('Erro ao criar nota');
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Nota</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notas/style.css' %}">
+
+</head>
+<body>
+    <h1>Editar Nota: {{ nota.titulo }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'lista_notas' %}">Voltar para a lista de notas</a>
+</body>
+</html>

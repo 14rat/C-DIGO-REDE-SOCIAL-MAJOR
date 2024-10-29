@@ -1,0 +1,143 @@
+/* Variáveis de Cores */
+:root {
+    --primary-color: #4e54c8;
+    --primary-dark: #434190;
+    --background-color: #f9f9fc;
+    --text-color: #333;
+    --text-light: #555;
+    --border-radius: 12px;
+    --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    --box-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Container Principal de Criação de Nota */
+.criar-nota-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 25px;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    transition: box-shadow 0.3s;
+}
+
+.criar-nota-container:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-bottom: 3px solid darken(var(--primary-color), 10%);
+}
+
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.navbar a:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+/* Títulos e textos */
+.criar-nota-container header h1 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.criar-nota-container header p {
+    color: var(--text-light);
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+/* Estilização do Formulário */
+.criar-nota-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+
+.criar-nota-container form label {
+    text-align: left;
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 10px 0 5px;
+}
+
+.criar-nota-container form input[type="text"],
+.criar-nota-container form textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+    background-color: #ffffff;
+    transition: border-color 0.3s, box-shadow 0.3s, color 0.3s;
+}
+
+.criar-nota-container form input[type="text"]:focus,
+.criar-nota-container form textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
+}
+
+/* Botão de Criar Nota */
+.criar-nota-container .btn-criar {
+    margin-top: 25px;
+    padding: 14px 24px;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.criar-nota-container .btn-criar:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+/* Responsividade para Telas Menores */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar a {
+        padding: 8px 12px;
+        margin: 5px 0;
+    }
+
+    .criar-nota-container {
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .criar-nota-container header h1 {
+        font-size: 2em;
+    }
+}
