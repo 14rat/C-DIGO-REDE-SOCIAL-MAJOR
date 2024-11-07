@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentários</title>
+    <link rel="stylesheet" href="{% static 'comentarios/comentarios.css' %}">
+</head>
+<body>
+    <div class="comentarios-container">
+        
+        <h2>Comentários</h2>
+        <hr class="separator">
+
+       
+        <div class="comentarios-lista">
+            {% for comentario in comentarios %}
+                <div class="comentario">
+                    <p><strong>{{ comentario.usuario.username }}</strong> {{ comentario.texto }}</p>
+                    <span class="data">{{ comentario.criado_em|date:"d/m/Y H:i" }}</span>
+
+                    
+                    <div class="interacoes">
+                        <button class="like" onclick="toggleLike(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </button>
+                        <button class="responder">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                                <path d="M21 1H3c-1.1 0-1.99.9-1.99 2L1 21c0 1.1.9 2 2 2h14l5 5V3c0-1.1-.9-2-2-2zM16 14l-4-4 4-4v3h4v2h-4z"/>
+                            </svg>
+                        </button>
+                        <button class="denunciar">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                                <path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm0 18c4.41 0 8-3.59 8-8s-3.59-8-8-8-8 3.59-8 8 3.59 8 8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-comentarios">Ainda não há comentários.</p>
+            {% endfor %}
+        </div>
+
+        
+        <div class="comentario-form">
+            <form action="{% url 'adicionar_comentario' nota_id=nota.id %}" method="post">
+                {% csrf_token %}
+                <textarea name="texto" placeholder="Adicione um comentário..." required></textarea>
+                <button type="submit" class="enviar-comentario">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleLike(element){
+            element.classList.toggle("liked");
+        }
+    </script>
+</body>
+</html>
+

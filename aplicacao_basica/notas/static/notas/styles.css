@@ -1,5 +1,16 @@
-/* Importação da fonte Roboto do Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap');
+
+/* Variáveis CSS para gerenciar cores */
+:root {
+    --cor-azul-suave: #4567b7;
+    --cor-azul-claro: #1da1f2;
+    --cor-roxo-suave: #6c5ce7;
+    --cor-cinza-claro: #f7f7f7;
+    --cor-cinza-leve: #e1e1e1;
+    --cor-cinza-escuro: #343a40;
+    --cor-branco: #ffffff;
+    --cor-azul-escuro: #2f4f7f;
+}
 
 /* Estilos Gerais */
 * {
@@ -9,28 +20,72 @@
 }
 
 body {
-    font-family: 'Roboto', sans-serif; /* Alterado para Roboto */
-    background-color: #f0f4f8;
-    color: #333;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--cor-cinza-claro); /* Fundo */
+    color: var(--cor-cinza-escuro);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    animation: fadeIn 1s ease-in-out;
 }
 
-/* Estilo do Cabeçalho */
+/* Animação de fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Define o estilo para a área acima da navbar */
+.header-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 94px; /* Ajuste a altura conforme necessário */
+    background-color: var(--cor-azul-suave);
+    z-index: -1; /* Para ficar atrás da navbar */
+}
+
+
 .header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 30px;
+    background-color: var(--cor-azul-suave);
+    color: var(--cor-branco);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px; /* Aumentado para mais espaço */
-    background-color: #4e54c8;
-    color: white;
-    border-bottom: 4px solid #8f94fb; /* Leve alteração na espessura */
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para profundidade */
+    z-index: 1000; /* Garante que a navbar fique acima de outros elementos */
+    transition: background-color 0.3s, box-shadow 0.3s ease-in-out; /* Transições suaves */
+
+    
+}
+.header.scrolled {
+    background-color: var(--cor-azul-claro); /* Muda a cor da navbar ao rolar */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
+
+
+}
+
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .header-left {
@@ -39,39 +94,124 @@ body {
 }
 
 .logo-icon {
-    font-size: 26px; /* Aumentado para maior destaque */
-    margin-right: 10px; /* Espaço maior entre logo e título */
+    font-size: 26px;
+    margin-right: 10px;
 }
 
 .header-title {
-    font-size: 24px; /* Aumentado para maior destaque */
+    font-size: 28px;
     font-weight: 700;
+    transition: transform 0.3s ease;
+    
 }
 
 /* Estilo do Botão de Criar Nota */
 .button-create {
-    background-color: #3f51b5;
+    background-color: var(--cor-roxo-suave);
     border: none;
     border-radius: 8px;
-    color: white;
-    padding: 12px 24px; /* Aumentado para maior conforto */
-    font-size: 16px; /* Ajustado */
+    color: var(--cor-branco);
+    padding: 12px 24px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    animation: fadeInUp 1s ease;
+}
+/* Menu Mobile - Hamburger */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--cor-branco);
+    margin: 4px 0;
+}
+
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .header-left {
+        flex: 1;
+        justify-content: space-between;
+    }
+
+    .header-title {
+        font-size: 24px;
+    }
+
+    /* Menu Dropdown (escondido inicialmente) */
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 15px;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: var(--cor-azul-suave);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        animation: fadeInMobile 0.5s ease;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        padding: 10px 0;
+        text-align: center;
+    }
+}
+
+/* Animação de Fade In para o menu mobile */
+@keyframes fadeInMobile {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .button-create:hover {
-    background-color: #3949ab;
+    background-color: var(--cor-azul-claro);
     transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Estilo do Conteúdo Principal */
 .main-container {
     flex: 1;
-    padding: 40px; /* Aumentado para mais espaço em volta */
+    padding: 140px 40px 40px;
     display: flex;
     justify-content: center;
 }
@@ -79,19 +219,20 @@ body {
 /* Estilo da Grade de Notas */
 .note-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Aumentado o mínimo para melhor visualização */
-    gap: 30px; /* Aumentado para espaçamento entre notas */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 40px;
     width: 100%;
     max-width: 1200px;
     padding: 20px;
+    animation: fadeIn 1.5s ease;
 }
 
 /* Estilo dos Itens de Nota */
 .note-item {
-    background: #fff;
-    border-radius: 12px; /* Aumentado para bordas mais suaves */
+    background: var(--cor-cinza-leve);
+    border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     position: relative;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -99,12 +240,25 @@ body {
     justify-content: space-between;
     cursor: pointer;
     border: 2px solid transparent;
+    animation: fadeInScale 0.6s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInScale {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .note-item:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
-    border-color: #4e54c8;
+    border-color: var(--cor-azul-suave);
 }
 
 .pin-icon {
@@ -112,20 +266,20 @@ body {
     top: 10px;
     right: 10px;
     font-size: 18px;
-    color: #4e54c8;
+    color: var(--cor-azul-escuro);
 }
 
 /* Estilo dos Títulos e Conteúdo das Notas */
 .note-title {
-    font-size: 22px; /* Aumentado para maior destaque */
-    color: #4e54c8;
+    font-size: 24px;
+    color: var(--cor-cinza-escuro);
     margin-bottom: 10px;
-    font-weight: 600; /* Negrito para destacar */
+    font-weight: 600;
 }
 
 .note-content {
     font-size: 16px;
-    color: #555;
+    color: var(--cor-azul-escuro);
     margin-bottom: 15px;
 }
 
@@ -133,46 +287,137 @@ body {
 .note-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 12px; /* Aumentado para mais espaço entre as ações */
+    gap: 12px;
 }
 
 .action {
     text-decoration: none;
     font-weight: bold;
-    padding: 10px 16px; /* Aumentado para mais conforto */
-    border-radius: 6px; /* Suavização das bordas */
+    padding: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
     gap: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
-
-.edit {
-    background-color: #4e54c8;
-    color: white;
+.edit, .delete {
+    background: none; /* Remove o fundo */
+    color: var(--cor-cinza-escuro); /* Cor dos ícones */
+    border: none;
+    font-size: 20px; /* Tamanho do ícone */
 }
-
-.edit:hover {
-    background-color: #434190;
+.edit:hover, .delete:hover {
+    transform: scale(1.1); /* Leve aumento ao passar o mouse */
+    color: var(--cor-azul-claro); /* Cor de hover */
 }
 
 .delete {
-    background-color: #d63031;
-    color: white;
+    color: #c62828
 }
 
 .delete:hover {
-    background-color: #c62828;
+    background-color: #b71c1c; /* Vermelho ainda mais escuro */
+    transform: scale(1.05);
+}
+
+.edit i, .delete i {
+    font-size: 20px; /* Tamanho do ícone */
 }
 
 /* Estilo do Rodapé */
 .footer {
     text-align: center;
-    padding: 20px; /* Aumentado para mais espaço */
-    background-color: #2d3436;
-    color: white;
+    padding: 20px;
+    background-color: var(--cor-cinza-leve);
+    color: var(--cor-cinza-escuro);
     position: relative;
     bottom: 0;
     width: 100%;
 }
+
+/* Responsividade */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 10px 20px;
+        flex-direction: row;
+    }
+
+    .header-left {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .header-title {
+        font-size: 24px;
+    }
+
+    .button-create {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .main-container {
+        padding: 120px 20px 40px;
+    }
+
+    .note-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .note-item {
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .note-title {
+        font-size: 20px;
+    }
+
+    .note-content {
+        font-size: 14px;
+    }
+
+    .note-actions {
+        flex-direction: row;
+
+}
+
+/* Acessibilidade */
+:focus {
+    outline: 2px solid var(--cor-azul-claro);
+}
+
+a {
+    color: var(--cor-azul-escuro);
+    text-decoration: underline;
+}
+
+a:hover {
+    color: var(--cor-azul-claro);
+}
+    button.action.comment {
+        background: none;         /* Remove o fundo do botão */
+        border: none;             /* Remove a borda */
+        padding: 0;               /* Remove o padding, se necessário */
+        cursor: pointer;         /* Altera o cursor para indicar que é clicável */
+        display: inline-flex;     /* Garante que o conteúdo (ícone) seja alinhado corretamente */
+        align-items: center;      /* Alinha o ícone verticalmente */
+        justify-content: center;  /* Alinha o ícone horizontalmente */
+    }
+
+    button.action.comment i {
+        color: var(--cor-azul-claro);           /* Define a cor do ícone como azul */
+        font-size: 1.9em;         
+    
+}
+    
+
+
+
 

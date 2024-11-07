@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentários de {{ nota.titulo }}</title>
+</head>
+<body>
+    <h1>Comentários de {{ nota.titulo }}</h1>
+
+    {% if comentarios %}
+        <ul>
+            {% for comentario in comentarios %}
+                <li>{{ comentario.conteudo }} - {{ comentario.criado_em }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Não há comentários para esta nota.</p>
+    {% endif %}
+
+    <h2>Adicionar Comentário</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Renderiza o formulário -->
+        <button type="submit">Enviar Comentário</button>
+    </form>
+
+    <a href="{% url 'lista_notas' %}">Voltar para a lista de notas</a>
+</body>
+</html>
