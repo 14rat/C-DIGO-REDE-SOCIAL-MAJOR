@@ -402,17 +402,17 @@ a:hover {
     color: var(--cor-azul-claro);
 }
     button.action.comment {
-        background: none;         /* Remove o fundo do botão */
-        border: none;             /* Remove a borda */
-        padding: 0;               /* Remove o padding, se necessário */
-        cursor: pointer;         /* Altera o cursor para indicar que é clicável */
-        display: inline-flex;     /* Garante que o conteúdo (ícone) seja alinhado corretamente */
-        align-items: center;      /* Alinha o ícone verticalmente */
-        justify-content: center;  /* Alinha o ícone horizontalmente */
+        background: none;       
+        border: none;             
+        padding: 0;   
+        cursor: pointer;  
+        display: inline-flex;  
+        align-items: center;      
+        justify-content: center; 
     }
 
     button.action.comment i {
-        color: var(--cor-azul-claro);           /* Define a cor do ícone como azul */
+        color: var(--cor-azul-claro);          
         font-size: 1.9em;         
     
 }

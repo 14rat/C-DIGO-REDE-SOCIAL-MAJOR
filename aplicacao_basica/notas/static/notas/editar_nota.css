@@ -1,0 +1,136 @@
+/* Paleta de cores */
+:root {
+    --cor-azul-suave: #4567b7;
+    --cor-azul-claro: #1da1f2;
+    --cor-roxo-suave: #6c5ce7;
+    --cor-cinza-claro: #f7f7f7;
+    --cor-cinza-leve: #e1e1e1;
+    --cor-cinza-escuro: #343a40;
+    --cor-branco: #ffffff;
+    --cor-azul-escuro: #2f4f7f;
+}
+
+/* Resetando alguns estilos padrões */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilos do body */
+body {
+    background-color: var(--cor-cinza-claro);
+    color: var(--cor-cinza-escuro);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+/* Container principal */
+.container {
+    background-color: var(--cor-branco);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* Cabeçalho */
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--cor-azul-suave);
+}
+
+/* Estilos do formulário */
+.form-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--cor-azul-escuro);
+}
+
+input, textarea {
+    padding: 10px;
+    border: 1px solid var(--cor-cinza-leve);
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    transition: border-color 0.3s ease-in-out;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--cor-azul-suave);
+    outline: none;
+}
+
+/* Estilos das ações */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--cor-branco);
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+.btn-save {
+    background-color: var(--cor-azul-suave);
+}
+
+.btn-save:hover {
+    background-color: var(--cor-azul-claro);
+}
+
+.btn-cancel {
+    background-color: var(--cor-roxo-suave);
+}
+
+.btn-cancel:hover {
+    background-color: var(--cor-azul-escuro);
+}
+
+/* Transições */
+input, textarea, .btn {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+        padding: 15px;
+    }
+    h1 {
+        font-size: 20px;
+    }
+}

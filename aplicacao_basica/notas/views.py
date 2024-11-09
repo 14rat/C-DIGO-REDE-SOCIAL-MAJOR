@@ -35,17 +35,29 @@ def criar_nota_ajax(request):
     })
 
 def editar_nota(request, id):
+    
     nota = get_object_or_404(Nota, id=id)
-    if request.method == 'POST':
-        nota.titulo = request.POST.get('titulo')
-        nota.conteudo = request.POST.get('conteudo')
-        nota.save()
-        return redirect('index')
-    return render(request, 'notas/editar_nota_form.html', {'nota': nota})
 
-def excluir_nota(request, id):
-    nota = get_object_or_404(Nota, id=id)
     if request.method == 'POST':
-        nota.delete()
-        return redirect('index')
-    return render(request, 'notas/confirmar_exclusao.html', {'nota': nota})
+    
+        nota.titulo = request.POST.get('titulo')  
+        nota.conteudo = request.POST.get('conteudo')  
+
+        
+        nota.save()
+
+    
+        return redirect('lista_notas')
+
+    
+    return render(request, 'notas/editar_nota.html', {'nota': nota})
+    
+def excluir_nota(request, id):
+    
+    nota = get_object_or_404(Nota, id=id)
+
+    
+    nota.delete()
+
+    
+    return redirect('lista_notas')

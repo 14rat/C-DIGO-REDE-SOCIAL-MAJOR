@@ -1,20 +1,42 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Nota</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'notas/style.css' %}">
-
+    <link rel="stylesheet" href="{% static 'notas/editar_nota.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
 </head>
 <body>
-    <h1>Editar Nota: {{ nota.titulo }}</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Salvar</button>
-    </form>
-    <a href="{% url 'lista_notas' %}">Voltar para a lista de notas</a>
+    <div class="container">
+        <h1>Editar Nota</h1>
+        <form method="POST" class="form-edit">
+            {% csrf_token %}
+
+            
+            <div class="form-group">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" name="titulo" value="{{ nota.titulo }}" placeholder="Digite o título da nota" required>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="conteudo">Conteúdo</label>
+                <textarea id="conteudo" name="conteudo" placeholder="Digite o conteúdo da nota" required>{{ nota.conteudo }}</textarea>
+            </div>
+
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-save">
+                    <span class="material-icons">save</span> Salvar
+                </button>
+                <a href="{% url 'lista_notas' %}" class="btn btn-cancel">
+                    <span class="material-icons">cancel</span> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
+

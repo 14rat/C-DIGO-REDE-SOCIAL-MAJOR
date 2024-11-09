@@ -5,15 +5,10 @@
     <title>Excluir Nota</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'notas/style.css' %}">
-
 </head>
 <body>
     <h1>Excluir Nota: {{ nota.titulo }}</h1>
-    <p>Tem certeza que deseja excluir esta nota?</p>
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit">Excluir</button>
-    </form>
-    <a href="{% url 'lista_notas' %}">Cancelar</a>
+    <p>A nota foi excluída com sucesso.</p>
+    <a href="{% url 'lista_notas' %}">Voltar à lista de notas</a>
 </body>
 </html>
