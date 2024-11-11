@@ -2,30 +2,32 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Comentario
+from .models import Like
 from notas.models import Nota
 from .forms import ComentarioForm
 from django.shortcuts import redirect
+import json
 
 def lista_comentarios(request, nota_id):
     nota = get_object_or_404(Nota, id=nota_id)
     comentarios = Comentario.objects.filter(nota=nota).order_by('-criado_em')
 
-    # Se o método for POST, isso significa que o usuário está tentando adicionar um comentário
+ 
     if request.method == 'POST':
-        form = ComentarioForm(request.POST)  # Cria um formulário com os dados recebidos
-        if form.is_valid():  # Verifica se o formulário é válido
-            comentario = form.save(commit=False)  # Cria uma instância do comentário, mas não salva ainda
-            comentario.nota = nota  # Associa o comentário à nota correta
-            comentario.save()  # Salva o comentário no banco de dados
-            return redirect('lista_comentarios', nota_id=nota.id)  # Redireciona para a mesma página
+        form = ComentarioForm(request.POST) 
+        if form.is_valid(): 
+            comentario = form.save(commit=False) 
+            comentario.nota = nota
+            comentario.save() 
+            return redirect('lista_comentarios', nota_id=nota.id) 
 
     else:
-        form = ComentarioForm()  # Se não for POST, cria um formulário vazio
+        form = ComentarioForm()  
 
     return render(request, 'comentarios/comentario_list.html', {
         'nota': nota,
         'comentarios': comentarios,
-        'form': form,  # Passa o formulário para o template
+        'form': form,  
     })
 
 
@@ -35,7 +37,44 @@ def adicionar_comentario(request, nota_id):
         if form.is_valid():
             comentario = form.save(commit=False)
             comentario.nota_id = nota_id
-            comentario.usuario = request.user if request.user.is_authenticated else None  # Deixa vazio se for anônimo
+
+            
+            if request.user.is_authenticated:
+                comentario.usuario = request.user
+            else:
+                comentario.usuario = None  
+
             comentario.save()
             return redirect('lista_comentarios', nota_id=nota_id)
+
     return redirect('lista_comentarios', nota_id=nota_id)
+
+
+def curtir_comentario_ajax(request, comentario_id):
+    if request.method == 'POST':
+        
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'JSON inválido.'}, status=400)
+
+        comentario = get_object_or_404(Comentario, id=comentario_id)
+
+      
+        usuario = request.user if request.user.is_authenticated else None
+
+        
+        like = Like.objects.filter(comentario=comentario, usuario=usuario).first()
+
+        if like:
+            like.delete()
+            liked = False
+        else:
+            Like.objects.create(comentario=comentario, usuario=usuario)
+            liked = True
+        return JsonResponse({
+            'likes_count': comentario.likes.count(),
+            'liked': liked
+        })
+
+    return JsonResponse({'error': 'Método não permitido.'}, status=405)
